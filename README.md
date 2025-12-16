@@ -1,33 +1,20 @@
-# Curse of Dimensionality: Hypercube Distances
+# n-Dimensional Hypercube Distance Simulator
 
-Monte Carlo: Average Euclidean distance E[||P1-P2||_2] between uniform [0,1]^n points. Explodes ~√(n/6) → distances saturate hypercube diameter despite "volume normalization".
+Monte Carlo simulation: average Euclidean distance between two random points in [0,1]^n hypercube. Validates E[||P₁-P₂||] ~ √(n/6) asymptotic for n→∞. Plots 1D→1000D.
 
 ## Overview
-- **1D**: E[|U1-U2|]=1/3 (analytic baseline).
-- **nD**: Sample pairs → np.linalg.norm → mean (1000 samples/dim).
-- **Dims**: 1-1000 → plot shows linear √n growth.
-- Reveals: High-D points "far apart" → sparsity/curse.
+- **1D case**: E[|U₁-U₂|] = 1/3 (uniform [0,1]).
+- **n-D case**: E[||P₁-P₂||] where P₁,P₂ ∈ [0,1]^n, ||·|| = L2 norm.
+- **Asymptotic**: Distance grows as √(n/6) for large n (theoretical).
+- **Output**: Static plot (distance vs. dimensions 1-1000).
 
-## Code
-```python
-def average_euclidean_distance_nd(n_dim, n_samples=1000):
-    point1 = np.random.uniform(0, 1, (n_samples, n_dim))
-    point2 = np.random.uniform(0, 1, (n_samples, n_dim))
-    return np.mean(np.linalg.norm(point1 - point2, axis=1))
-Loop dims → plot.
-Fast: ~1s for 1000 dims.
-Parametric: Tweak n_samples, dimensions.
+## Code Structure
+1. `average_absolute_difference_1d(n_samples)`: 1D baseline (mean ~0, |·| mean ~0.33).
+2. `average_euclidean_distance_nd(n_dim, n_samples)`: Generate n_samples point pairs in [0,1]^n_dim → compute ||P₁-P₂|| → average.
+3. Loop: Dimensions 1→1000 (1000 samples each) → store avg distance.
+4. Plot: Blue line (MC estimate), grid overlay.
 
-Files
-
-curse_dim.ipynb: Self-contained Jupyter (np/matplotlib).
-
-Run
-pip install numpy matplotlib jupyter
-jupyter notebook curse_dim.ipynb
-→ Interactive plot.
-Output
-1D: {'avg_abs_diff': ~0.333, ...}
-Plot: Rising curve (MC), grid/log optional.
-![Plot](data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAkkAAAHFCAYAAADmGm0K... [from notebook])
-(Avg dist vs dim: flat low-D → √n explosion)
+## Run
+```bash
+pip install numpy matplotlib
+python hypercube_distance.py
