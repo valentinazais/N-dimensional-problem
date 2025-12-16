@@ -18,3 +18,28 @@ Monte Carlo simulation: average Euclidean distance between two random points in 
 ```bash
 pip install numpy matplotlib
 python hypercube_distance.py
+
+Math
+
+1D: ∫₀¹∫₀¹|u-v|dudv = 1/3.
+n-D: E[∑ᵢ(Xᵢ-Yᵢ)²] = n·Var(U)·2 = n/6 → E[distance] ≈ √(n/6).
+Convergence: MC error ~1/√(1000) per dimension.
+
+Example Output
+
+D=1: ~0.33 (matches theory).
+D=100: ~4.08 (vs. √(100/6)≈4.08).
+D=1000: ~12.9 (vs. √(1000/6)≈12.9).
+Plot: Linear-ish growth √n regime visible.
+
+Use Cases
+
+Curse of dimensionality demo.
+Random sampling density (points spread as n↑).
+Unit tests for high-D geometry algos.
+
+Extend
+
+Add theoretical √(n/6) overlay (plt.plot(dimensions, np.sqrt(np.array(dimensions)/6), '--', label='Theory')).
+Vary distributions (Gaussian, exponential).
+Compute variance/percentiles.
